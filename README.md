@@ -1,4 +1,4 @@
-# No Promises
+# Promises for Rust
 
 Awaitable promises in Rust. Similar to promises in Javascript, except you can only await them, no then/catch business.
 
