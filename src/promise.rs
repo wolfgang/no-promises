@@ -2,13 +2,14 @@ use std::future::Future;
 use std::pin::Pin;
 use std::sync::{Arc, Mutex};
 use std::task::{Context, Poll, Waker};
+
 use async_std::task;
+
+pub use crate::promise_error::Error;
 
 type BoxedFn<T> = Box<dyn Fn(T)>;
 type Result<T> = std::result::Result<T, Error>;
-type SharedSTateMutex<T> = Arc<Mutex<SharedState<T>>>;
-
-pub use crate::promise_error::Error;
+type SharedStateMutex<T> = Arc<Mutex<SharedState<T>>>;
 
 struct SharedState<T> {
     value: Option<Result<T>>,
@@ -25,7 +26,7 @@ impl<T> SharedState<T> {
 }
 
 pub struct Promise<T> {
-    shared_state: SharedSTateMutex<T>,
+    shared_state: SharedStateMutex<T>,
 }
 
 impl<T: Send + 'static> Promise<T> {
@@ -34,7 +35,7 @@ impl<T: Send + 'static> Promise<T> {
         Self { shared_state }
     }
 
-    fn spawn_delivery<F: Fn(BoxedFn<T>, BoxedFn<Error>) + Send + 'static>(delivery_fn: F) -> SharedSTateMutex<T> {
+    fn spawn_delivery<F: Fn(BoxedFn<T>, BoxedFn<Error>) + Send + 'static>(delivery_fn: F) -> SharedStateMutex<T> {
         let shared_state = Arc::new(Mutex::new(SharedState { value: None, waker: None }));
 
         let shared_state_thread = shared_state.clone();
