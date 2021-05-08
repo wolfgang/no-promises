@@ -1,4 +1,5 @@
 # Promises for Rust
+[![Tests](https://github.com/wolfgang/no-promises/actions/workflows/tests.yml/badge.svg)](https://github.com/wolfgang/no-promises/actions/workflows/tests.yml)
 
 Awaitable promises in Rust. Similar to promises in Javascript, except you can only await them, no then/catch business.
 
