@@ -2,7 +2,7 @@ use std::future::Future;
 use std::pin::Pin;
 use std::sync::{Arc, Mutex};
 use std::task::{Context, Poll, Waker};
-use std::{thread};
+use async_std::task;
 
 type BoxedFn<T> = Box<dyn Fn(T)>;
 type Result<T> = std::result::Result<T, Error>;
@@ -49,7 +49,7 @@ impl<T: Send + 'static> Promise<T> {
             shared_state.wake(Some(Err(error)));
         };
 
-        thread::spawn(move || { delivery_fn(Box::from(resolve), Box::from(reject)) });
+        task::spawn(async move { delivery_fn(Box::from(resolve), Box::from(reject)) });
         shared_state
     }
 }
