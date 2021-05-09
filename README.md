@@ -34,7 +34,7 @@ fn promise_div(a: f32, b: f32) -> Promise<f32> {
 
 ```
 
-- Threadless sleeping:
+- Very busy sleeping:
 
 ```rust
 use std::time;
